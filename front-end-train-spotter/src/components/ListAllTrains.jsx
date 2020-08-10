@@ -62,7 +62,7 @@ class ListAllTrains extends Component {
             dataField="lastSighting"
             dataAlign="center"
             headerAlign="center"
-            width="500"
+            width="300"
           >
             Last Sighting
           </TableHeaderColumn>

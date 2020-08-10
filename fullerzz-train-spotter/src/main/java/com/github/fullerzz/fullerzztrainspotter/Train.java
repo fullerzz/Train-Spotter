@@ -17,6 +17,10 @@ public class Train {
         return number;
     }
 
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
     public int getNumSightings() {
         return numSightings;
     }
