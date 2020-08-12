@@ -46,7 +46,7 @@ public class TrainsHardcodedService {
                     temp = new Train(train_num);
                     addTrain(temp);
                 }
-                Event sighting = new Event(time_seen, direction);
+                Event sighting = new Event(time_seen, direction, train_num);
                 temp.addSighting(sighting);
 
                 System.out.println("Train Number = " + train_num);
@@ -70,6 +70,7 @@ public class TrainsHardcodedService {
 
     public static void addTrain(Train train) {
         trains.put(train.getNumber(), train);
+        trainsList.add(train);
     }
 
     public List<Train> findAll() {
@@ -81,6 +82,35 @@ public class TrainsHardcodedService {
             return trains.get(id);
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public void addSighting(Event event) {
+        Train train = findTrain(event.getTrainNum());
+        if (train == null) {
+            train = new Train(event.getTrainNum());
+            addTrain(train);
+        }
+        train.addSighting(event);
+
+        Connection c = null;
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:train.db");
+            c.setAutoCommit(false);
+
+            stmt = c.createStatement();
+            String sql = "INSERT INTO SIGHTINGS (train_num, time_seen, direction) " +
+                    "VALUES (" + event.getTrainNum() + ", '" + event.getDatetime() + "', '" + event.getDirection() + "');";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
     }
 }
