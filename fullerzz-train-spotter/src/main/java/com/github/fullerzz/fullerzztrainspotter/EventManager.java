@@ -35,7 +35,7 @@ public class EventManager {
                     temp = new Train(train_num);
                     addTrain(temp);
                 }
-                Event sighting = new Event(time_seen, direction);
+                Event sighting = new Event(time_seen, direction, train_num);
                 temp.addSighting(sighting);
 
                 System.out.println("Train Number = " + train_num);
@@ -54,7 +54,7 @@ public class EventManager {
     }
 
     public void addNewSighting(int train_num, String datetime, String direction) {
-        Event event = new Event(datetime, direction);
+        Event event = new Event(datetime, direction, train_num);
         Train temp = getTrain(train_num);
         if (temp == null) {
             temp = new Train(train_num);
